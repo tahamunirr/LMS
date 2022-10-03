@@ -1,0 +1,842 @@
+package lms;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class database {
+	
+	  public Connection getConnection() {
+	        // TODO Auto-generated method stub
+
+	        String url="jdbc:sqlserver://BATMAN;databaseName=SDAProject1;user=GulamServer;password=server";
+	        
+
+	        try {
+	            Connection conn= DriverManager.getConnection(url);
+
+	             if (conn != null) {
+	                    DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
+	                    System.out.println("Driver name: " + dm.getDriverName());
+	                    System.out.println("Driver version: " + dm.getDriverVersion());
+	                    System.out.println("Product name: " + dm.getDatabaseProductName());
+	                    System.out.println("Product version: " + dm.getDatabaseProductVersion());
+	                    return conn;
+	                }
+	        }
+	        catch(SQLException e){
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
+	    
+	    public int login(int id,String pass) {
+	    	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call user_login (?,?,?)}"); 
+		    		cstmt.setInt(1, id);          
+		    		cstmt.setString(2, pass);          
+		    		cstmt.registerOutParameter(3, java.sql.Types.INTEGER);          
+		    		cstmt.execute();
+		    		int result = cstmt.getInt(3);          
+		    		System.out.println("The User is: "+result);                    
+		    		return result;         
+	    		}   
+	    	
+	    	catch(SQLException e){            
+	    			e.printStackTrace();        
+	    		}                  
+			return 0;
+	    }
+	    
+	    
+	    public int regCourse(int std_id,int crs_id) {
+	    	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call std_regis (?,?,?)}");         
+		    		cstmt.setInt(1, std_id);
+		    		cstmt.setInt(2, crs_id);     
+		    		cstmt.registerOutParameter(3, java.sql.Types.INTEGER);  
+		    		cstmt.execute();          
+		    		int result = cstmt.getInt(3); 
+		    		
+		    		return result;    
+		    		
+	    		}   
+	    	
+	    	catch(SQLException e){            
+	    			e.printStackTrace();  
+	    			return 0;
+	    		}                  
+			
+	    }
+	    
+	    
+	    public void dropCourse(int st_id, int cs_id) {
+	    	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call drop_reg (?,?)}"); 
+		    		cstmt.setInt(1, st_id);    
+		    		cstmt.setInt(2, cs_id);          
+		    		cstmt.execute();
+	         
+	    		}   
+	    	
+	    	catch(SQLException e){            
+	    			e.printStackTrace();        
+	    		}                  
+		
+	    }
+
+	    
+	    
+	    public float calSgpa(int sem, int std_id) {
+	    	
+	    	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call cal_sgpa (?,?,?,?,?)}"); 
+		    		cstmt.setInt(1, sem);
+		    		cstmt.setInt(2, std_id);
+		    		cstmt.registerOutParameter(3, java.sql.Types.FLOAT);
+		    		cstmt.registerOutParameter(4, java.sql.Types.FLOAT);
+		    		cstmt.registerOutParameter(5, java.sql.Types.FLOAT);
+		    		cstmt.execute();
+		    		float result = cstmt.getInt(3);          
+		    		System.out.println("The Result is: "+result);                    
+		    		return result;         
+	    		}   
+	    	
+	    	catch(SQLException e){            
+	    			e.printStackTrace();        
+	    		}                  
+			return 0;
+	    }
+
+  public float calCgpa(int std_id) {
+	    	
+	    	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call cal_cgpa (?,?,?)}"); 
+		    		cstmt.setInt(1, std_id);
+		    		cstmt.registerOutParameter(2, java.sql.Types.FLOAT);
+		    		cstmt.registerOutParameter(3, java.sql.Types.FLOAT);
+		    		cstmt.execute();
+		    		float result = cstmt.getInt(3);          
+		    		System.out.println("The Result is: "+result);                    
+		    		return result;         
+	    		}   
+	    	
+	    	catch(SQLException e){            
+	    			e.printStackTrace();        
+	    		}                  
+			return 0;
+	    }
+  
+  public student view(int id) {
+	  student s= new student();
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call user_view (?)}"); 
+              cstmt.setInt(1, id); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) {
+            	  s.userId=result.getInt("u_id");
+                  s.name = result.getString("name");
+                  s.cnic = result.getString("cnic");
+                  s.fatherName =result.getString("fatherName");
+                  int rol= result.getInt("rollno");
+                  s.rollNo= String.valueOf(rol);
+                  s.city = result.getString("city");  
+              }
+              
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return s;
+  }
+  
+  
+  
+  public teacher viewTeacher(int id) {
+	  teacher s= new teacher();
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call user_view (?)}"); 
+              cstmt.setInt(1, id); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) {
+            	  s.userId=result.getInt("u_id");
+                  s.name = result.getString("name");
+                  s.cnic = result.getString("cnic");
+                  s.fatherName =result.getString("fatherName");
+                  s.city = result.getString("city");  
+              }
+              
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return s;
+  }
+
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  public course[] off_course (int id) 
+  {
+	  course c[] = new course[10];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  c[j]=new course();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call off_courses (?)}"); 
+              cstmt.setInt(1, id); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  c[i] = new course( result.getInt("c_id"),result.getString("course"),result.getString("section"),result.getInt("crdt"),i  ) ;
+                  c[0].size= i;
+                  System.out.println(c[i].Name); 
+                  i++;
+              }
+              
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return c;
+  }
+  
+  
+  
+  
+  public course[] get_sec (int tid) 
+  {
+	  course c[] = new course[10];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  c[j]=new course();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call get_sec (?)}"); 
+              cstmt.setInt(1, tid); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  c[i] = new course( result.getInt("cs"),result.getString("course"),result.getString("section"),0,i  ) ;
+                  
+                  System.out.println(c[i].Name); 
+                  i++;
+              }
+              c[0].size= i;
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return c;
+  }  
+  
+  public std[] get_stds (int tid, int cid) 
+  {
+	  std c[] = new std[20];
+	  int i=0;
+	  for (int j=0; j< 20 ;j++)
+	  {
+		  c[j]=new std();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call get_stds (?,?)}"); 
+              cstmt.setInt(1, tid);
+              cstmt.setInt(2, cid);
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  c[i] = new std( result.getInt("id"),result.getString("name"),result.getInt("roll"),i ) ;
+                  System.out.println(c[i].Name); 
+                  i++;
+              }
+              c[0].size= i;
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }  
+       return c;
+
+  }  
+  
+  public int addAttendance(int std_id, int cid , String status) {
+  	
+  	try {         
+	    		Connection conn = getConnection();          
+	    		CallableStatement cstmt = conn.prepareCall("{ call add_attendance (?,?,?,?)}"); 
+	    		cstmt.setInt(1, cid);
+	    		cstmt.setInt(2, std_id);
+	    		cstmt.setString(3, status);
+	    		cstmt.registerOutParameter(4, java.sql.Types.INTEGER);
+	    		cstmt.execute();
+	    		int result = cstmt.getInt(4);          
+	    		System.out.println("The ATEASDKAS "+result);                    
+	    		return result;         
+  		}   
+  	
+  	catch(SQLException e){            
+  			e.printStackTrace();        
+  		}                  
+		return 0;
+  }
+  
+  
+  public void addEvaluation(int tid, int cid , String type ,int total , int wt ) {
+  	try {         
+	    		Connection conn = getConnection();          
+	    		CallableStatement cstmt = conn.prepareCall("{ call add_evaluation (?,?,?,?,?,?)}"); 
+	    		cstmt.setInt(1, tid);    
+	    		cstmt.setInt(2, cid);
+	    		cstmt.setString(3, type);
+	    		cstmt.setInt(4, total);
+	    		cstmt.setInt(5, wt);
+	    		cstmt.registerOutParameter(6, java.sql.Types.INTEGER);
+	    		cstmt.execute();
+       
+  		}   
+  	
+  	catch(SQLException e){            
+  			e.printStackTrace();        
+  		}                  
+	
+  }
+  
+  
+  public void addMarks(int eid, int sid , int marks ) {
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call add_marks (?,?,?,?)}"); 
+		    		cstmt.setInt(1, eid);    
+		    		cstmt.setInt(2, sid);
+		    		cstmt.setInt(3, marks);
+		    		cstmt.registerOutParameter(4, java.sql.Types.INTEGER);
+		    		cstmt.execute();
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+		
+	  }
+  
+  
+  
+  
+  
+  public evaluation[] getEvaluation(int tid, int cid ) {
+	  
+	  evaluation s[] = new evaluation[10];
+	  
+	  for(int i =0 ;i<10 ; i++)
+	  {
+		  s[i] = new evaluation();
+	  }
+	  
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call GetEvaluations (?,?)}"); 
+		    		cstmt.setInt(1, tid);    
+		    		cstmt.setInt(2, cid);
+		    		ResultSet result;
+		    		int i=0;
+		            result=cstmt.executeQuery();
+		    		while(result.next()) 
+		              {
+		                  s[i].Name = result.getString("type");
+		                  s[i].id =result.getInt("e_id");
+		                  s[i].total =result.getInt("total");
+		          
+		                  i++;
+		              }
+		    		s[0].size =i;
+		          
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	  	
+	  	return s;
+		
+	  }
+  
+  
+  
+  public void addApplication(int sid, int cid ) {
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call addApllication (?,?)}"); 
+		    		cstmt.setInt(1, cid);    
+		    		cstmt.setInt(2, sid);
+		    		cstmt.execute();
+	      
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+		
+	  }
+  
+  
+  
+  
+  
+  /////////////////////////////////////
+  
+  
+  public course[] get_sec_std (int sid) 
+  {
+	  course c[] = new course[10];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  c[j]=new course();
+	  }
+	 
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call view_course_std (?)}"); 
+              cstmt.setInt(1, sid); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  //c[i] = new course( result.getInt("cs_id"),result.getString("course"),result.getString("section"),0,i  ) ;
+                  c[i].Name=result.getString("course");
+                  c[i].courseId=result.getInt("cs_id");
+                  c[i].SecName=result.getString("section");
+                  System.out.println("ylooo"+c[i].Name); 
+                  i++;
+              }
+              c[0].size= i;
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return c;
+  }  
+  
+  public Attendance[] get_course_attendence (int sid,int cid) 
+  {
+	  Attendance a[] = new Attendance[30];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  a[j]=new Attendance();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call view_course_attendence (?,?)}"); 
+              cstmt.setInt(1, sid); 
+              cstmt.setInt(2, cid); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  a[i] = new Attendance( result.getInt("cs_id"),sid,result.getString("course"),result.getString("section"),result.getString("status"),result.getString("date"),i) ;
+                  
+                  System.out.println(a[i].status); 
+                  i++;
+              }
+              a[0].size= i;
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return a;
+  }  
+  
+  public marks[] get_marks (int sid,int cid) 
+  {
+	  marks a[] = new marks[10];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  a[j]=new marks();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call view_marks (?,?)}"); 
+              cstmt.setInt(1, sid); 
+              cstmt.setInt(2, cid); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  a[i] = new marks( result.getInt("cs_id"),sid,result.getString("course"),result.getString("sec"),
+                		  result.getString("type"),result.getInt("total"),result.getInt("obtained_marks"),result.getInt("weightage"),
+                		  result.getInt("obtained_weightage"),i) ;
+                  
+                  System.out.println(a[i].obtMarks); 
+                  i++;
+              }
+              a[0].size= i;
+              
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return a;
+  }  
+
+  
+  
+  
+  public void Application(int sid, int cid ) {
+  	try {         
+	    		Connection conn = getConnection();          
+	    		CallableStatement cstmt = conn.prepareCall("{ call addApllication (?,?)}"); 
+	    		cstmt.setInt(1, sid);    
+	    		cstmt.setInt(2, cid);
+	    		cstmt.execute();
+       
+  		}   
+  	
+  	catch(SQLException e){            
+  			e.printStackTrace();        
+  		}                  
+	
+  }
+  
+  
+  public int Open(int sid ) {
+	  
+	   int result =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call checkOpen (?,?)}"); 
+		    		cstmt.setInt(1, sid);    
+		    		cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+		    		cstmt.execute();
+		    		result = cstmt.getInt(2);  
+		    		return result;
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	  	return result;
+	  	    
+	  }
+       
+  
+  
+  
+  
+  public int sem_std(int sid ) {
+	  
+	   int result =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call sem_std (?,?)}"); 
+		    		cstmt.setInt(1, sid);    
+		    		cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+		    		cstmt.execute();
+		    		result = cstmt.getInt(2);  
+		    		return result;
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	  	return result;
+	  	    
+	  }
+  
+  
+  
+  public void openreg( ) {
+	  
+	   int result =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call openreg()}");
+		    		cstmt.execute();
+		 
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	
+	  	    
+	  }
+ 
+  
+  public void closereg( ) {
+	  
+	   int result =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call closereg()}");
+		    		cstmt.execute();
+		 
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	
+	  	    
+	  }
+  
+  
+  public int getreg( ) {
+	  
+	   int res =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call getreg()}");
+		    		ResultSet result;
+		    		result=cstmt.executeQuery();  
+		              while(result.next()) 
+		              {
+		                  res=result.getInt("r"); 
+		              }
+		 
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	
+	  	return res;
+	  	    
+	  }
+  
+  
+  public float getcgpa(int id) {
+	  
+	   float res =0;
+	  	try {         
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call getcgpa(?)}");
+		    		cstmt.setFloat(1, id);
+		    		ResultSet result;
+		    		result=cstmt.executeQuery();  
+		              while(result.next()) 
+		              {
+		                  res=result.getInt("cgpa"); 
+		              }
+		 
+	       
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	
+	  	return res;
+	  	    
+	  }
+  
+  
+  
+  
+  public void EndSem() {
+	  
+	  int arr[]= new int[100];
+        int s=0;
+        
+	  	try {         
+	  		        
+	  		        
+	  		        int i=0;
+		    		Connection conn = getConnection();          
+		    		CallableStatement cstmt = conn.prepareCall("{ call returnStudents ()}");     
+		    		ResultSet result;
+		    		result=cstmt.executeQuery();  
+		              while(result.next()) 
+		              {
+		                  arr[i]=result.getInt("std_id"); 
+		                  i++;
+		              }
+		              s=i;
+	        
+	  		}   
+	  	
+	  	catch(SQLException e){            
+	  			e.printStackTrace();        
+	  		}                  
+	  	
+	  	
+	  	 int sems[] = new int [100];
+	  	 
+	  	 
+	  	  for (int i =0; i < s ; i++ )
+	  	  {
+	  		  sems[i] = sem_std(arr[i]);
+	  		  
+	  		  
+	  		  
+		  		course c[]= off_course(arr[i]);
+		  		  
+		  		 for (int j=0 ; j < c[0].size; j++)
+		  		  {
+		  			  
+		  			 try
+		  			 {
+		  			Connection conn = getConnection();
+		  			CallableStatement cstmt = conn.prepareCall("{ call calculate_sub_gpa (?,?,?)}");
+		  			cstmt.setInt(1, sems[i]); 
+		              cstmt.setInt(2, arr[i]);
+		              cstmt.setInt(2, c[j].courseId);
+		              cstmt.execute();
+		              
+		  			 }
+		  			catch(SQLException e){            
+			  			e.printStackTrace();        
+			  		} 
+		  		  }
+	  		  
+	  		  
+	  		  
+	  		  for (int j=0 ; j < sems[i]; j++)
+	  		  {
+	  			  
+	  			 try
+	  			 {
+	  			Connection conn = getConnection();
+	  			CallableStatement cstmt = conn.prepareCall("{ call cal_sgpa (?,?)}");
+	  			cstmt.setInt(1, sems[i]); 
+	              cstmt.setInt(2, arr[i]);
+	              cstmt.execute();
+	              
+	  			 }
+	  			catch(SQLException e){            
+		  			e.printStackTrace();        
+		  		} 
+	  		  }
+	  	
+	  		  
+	  		  
+	  	  }
+	  	  
+	  	  
+	  	try
+			 {
+			Connection conn = getConnection();
+			CallableStatement cstmt = conn.prepareCall("{ call endSem (?)}");
+			cstmt.setString(1, "Semester"); 
+            cstmt.execute();
+         
+			 }
+			catch(SQLException e){            
+ 			e.printStackTrace();        
+ 		} 
+	  
+	  	    
+	  }
+  
+  
+  
+  
+  public semester[] Transcript (int sid,int sem) 
+  {
+	  semester a[] = new semester[30];
+	  int i=0;
+	  for (int j=0; j< 10 ;j++)
+	  {
+		  a[j]=new semester();
+	  }
+	  
+      try {         
+              Connection conn = getConnection();          
+              CallableStatement cstmt = conn.prepareCall("{ call view_transcript_std (?,?)}"); 
+              cstmt.setInt(1, sid); 
+              cstmt.setInt(2, sem); 
+              ResultSet result;
+              result=cstmt.executeQuery();  
+              while(result.next()) 
+              {
+                  a[i].std_id =result.getInt("std_id");
+                  a[i].cs_id =result.getInt("cs_id");
+                  a[i].curr_sem =result.getInt("curr_sem");
+                  a[i].std_id =result.getInt("std_id");
+                  a[i].course =result.getString("course");
+                  a[i].section =result.getString("section");
+                  a[i].grade =result.getFloat("grade");
+                  a[i].cs_grade =result.getString("cs_grade");
+                  a[i].sgpa =result.getInt("sgpa");
+                  
+                  
+              
+                  System.out.println(a[i].sgpa); 
+                  i++;
+              }
+              a[0].size= i;
+              System.out.println(a[0].size); 
+                 
+          }   
+      
+      catch(SQLException e){            
+              e.printStackTrace();        
+          }               
+      return a;
+  }  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}

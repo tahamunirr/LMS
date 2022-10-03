@@ -1,0 +1,21 @@
+package lms;
+
+public class std {
+	
+	String Name;
+	int id;
+	int roll;
+	
+   public std()
+   {
+	   
+   }
+   
+   public std(int i , String b ,int c)
+   {
+	   Name=b;
+	   id=i;
+	   roll=c;
+   }
+   
+}

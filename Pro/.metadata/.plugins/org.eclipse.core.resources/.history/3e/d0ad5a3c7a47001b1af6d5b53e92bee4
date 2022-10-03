@@ -1,0 +1,9 @@
+package lms;
+
+public class evaluation 
+{
+	
+	String Name;
+	int id;
+
+}

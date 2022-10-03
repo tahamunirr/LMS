@@ -1,0 +1,188 @@
+package lms;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Color;
+import javax.swing.JSplitPane;
+import javax.swing.JDesktopPane;
+import javax.swing.JSpinner;
+import javax.swing.JList;
+import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+import java.awt.Font;
+import javax.swing.border.CompoundBorder;
+import javax.swing.JSeparator;
+import java.awt.SystemColor;
+import javax.swing.JProgressBar;
+import javax.swing.JSlider;
+import javax.swing.JScrollBar;
+import javax.swing.JTree;
+import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
+
+public class homeAdmin {
+
+	public JFrame home;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					homeAdmin window = new homeAdmin();
+					window.home.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public homeAdmin() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		home = new JFrame();
+		home.getContentPane().setBackground(Color.WHITE);
+		home.setBounds(100, 100, 839, 600);
+		home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		home.getContentPane().setLayout(null);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.setBorder(new CompoundBorder(new CompoundBorder(), null));
+		tabbedPane.setToolTipText("");
+		tabbedPane.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
+		tabbedPane.setForeground(new Color(0, 51, 102));
+		tabbedPane.setBounds(0, 0, 825, 563);
+		home.getContentPane().add(tabbedPane);
+		
+		
+		/////////////////////////////////////////////////////        HOME        //////////////////////////////////////////////////////////////////////
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		tabbedPane.addTab("Home", null, panel, null);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Welcome to LMS");
+		lblNewLabel.setForeground(new Color(0, 51, 102));
+		lblNewLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 40));
+		lblNewLabel.setBounds(179, 10, 351, 73);
+		panel.add(lblNewLabel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(20, 81, 691, 2);
+		panel.add(separator);
+		
+		JLabel lblNewLabel_1 = new JLabel("Name:");
+		lblNewLabel_1.setForeground(new Color(0, 51, 102));
+		lblNewLabel_1.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1.setBounds(20, 105, 58, 34);
+		panel.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Roll Num:");
+		lblNewLabel_1_1.setForeground(new Color(0, 51, 102));
+		lblNewLabel_1_1.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_1.setBounds(20, 135, 74, 34);
+		panel.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_2 = new JLabel("Father Name:");
+		lblNewLabel_1_2.setForeground(new Color(0, 51, 102));
+		lblNewLabel_1_2.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2.setBounds(20, 165, 112, 34);
+		panel.add(lblNewLabel_1_2);
+		
+		JLabel lblNewLabel_1_3 = new JLabel("CNIC:");
+		lblNewLabel_1_3.setForeground(new Color(0, 51, 102));
+		lblNewLabel_1_3.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_3.setBounds(20, 195, 58, 34);
+		panel.add(lblNewLabel_1_3);
+		
+		JLabel lblNewLabel_1_4 = new JLabel("CGPA:");
+		lblNewLabel_1_4.setForeground(new Color(0, 51, 102));
+		lblNewLabel_1_4.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_4.setBounds(20, 225, 58, 34);
+		panel.add(lblNewLabel_1_4);
+		
+		JLabel lblNewLabel_1_2_1 = new JLabel("Syed Mazhar Hussain");
+		lblNewLabel_1_2_1.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2_1.setBounds(192, 105, 287, 34);
+		panel.add(lblNewLabel_1_2_1);
+		
+		JLabel lblNewLabel_1_2_2 = new JLabel("18L-1073");
+		lblNewLabel_1_2_2.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2_2.setBounds(192, 135, 287, 34);
+		panel.add(lblNewLabel_1_2_2);
+		
+		JLabel lblNewLabel_1_2_3 = new JLabel("Syed Hussain ");
+		lblNewLabel_1_2_3.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2_3.setBounds(192, 165, 223, 34);
+		panel.add(lblNewLabel_1_2_3);
+		
+		JLabel lblNewLabel_1_2_4 = new JLabel("090078601");
+		lblNewLabel_1_2_4.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2_4.setBounds(192, 195, 112, 34);
+		panel.add(lblNewLabel_1_2_4);
+		
+		JLabel lblNewLabel_1_2_5 = new JLabel("3.69");
+		lblNewLabel_1_2_5.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		lblNewLabel_1_2_5.setBounds(192, 225, 112, 34);
+		panel.add(lblNewLabel_1_2_5);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(10, 282, 705, 2);
+		panel.add(separator_1);
+		
+		////////////////////////////////////////        ATTENDANCE PANEL      ///////////////////////////////////////////////////////////////
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		tabbedPane.addTab("Attendance", null, panel_1, null);
+		panel_1.setLayout(null);
+		
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_1.setBounds(358, 5, 5, 5);
+		panel_1.add(tabbedPane_1);
+		
+		JTabbedPane tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_2.setBounds(66, 73, 597, 459);
+		panel_1.add(tabbedPane_2);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		tabbedPane_2.addTab("Course 1", null, scrollPane, null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		tabbedPane_2.addTab("Course 2", null, scrollPane_1, null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		tabbedPane_2.addTab("Course 3", null, scrollPane_2, null);
+		
+		
+		////////////////////////////////////////////    MARKS    ////////////////////////////////////////////////////
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("Marks", null, panel_2, null);
+		
+		////////////////////////////////////////////   REGISTRATION    ////////////////////////////////////////////////////
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("Registration", null, panel_3, null);
+		
+		////////////////////////////////////////////   TRANSCRIPT    ////////////////////////////////////////////////////
+		
+		JPanel panel_4 = new JPanel();
+		tabbedPane.addTab("Transcript", null, panel_4, null);
+		
+		////////////////////////////////////////////////////////////////////////////////////////
+	}
+}

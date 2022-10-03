@@ -1,0 +1,10 @@
+package lms;
+
+public class std {
+	
+	String Name;
+	int id;
+	int roll;
+	
+
+}

@@ -1,0 +1,9 @@
+package lms;
+
+public class course
+{
+	int courseId;
+	String Name;
+	int creditHours;
+	section sec;
+}

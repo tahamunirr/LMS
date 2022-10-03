@@ -1,0 +1,21 @@
+package lms;
+
+public class evaluation 
+{
+	
+	String Name;
+	int id;
+	int size;
+	
+	public evaluation(String a ,int b,int c)
+	{
+		Name=a;
+		id=b;
+		size=c;
+	}
+
+	public evaluation()
+	{
+		
+	}
+}

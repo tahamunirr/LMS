@@ -1,0 +1,17 @@
+package lms;
+
+public class course
+{
+	int courseId;
+	String Name;
+	int creditHours;
+	String SecName;
+	
+	public course(String n, String s, int c , int i)
+	{
+		courseId =i;
+		Name=n;
+		SecName = s;
+		creditHours=c;
+	}
+}
